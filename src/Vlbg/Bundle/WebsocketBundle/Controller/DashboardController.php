@@ -27,7 +27,7 @@ class DashboardController extends Controller
             'VlbgWebsocketBundle:Dashboard:ticker.html.twig',
             array(
                 'event' => $eventRepository->find($id),
-                'entries' => $entryRepository->findBy(array('event' => $id))
+                'entries' => $entryRepository->findBy(array('event' => $id), array('created' => 'DESC'))
             )
         );
     }

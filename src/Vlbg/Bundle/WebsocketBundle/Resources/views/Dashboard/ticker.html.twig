@@ -2,18 +2,25 @@
 
 {% block body -%}
     <h1>{{ event.name }}</h1>
+    <a href="{{ path('ticker', {id: event.id}) }}">Reload</a>
 
     <div class="row">
-        <ul>
+        <table class="table">
             {% for entry in entries %}
-                <li>
-                    <b>{{ entry.title }}</b> by {{ entry.creator }} ({{ entry.created|date('Y-m-d H:i:s') }})<br/>
-
-                    {{ entry.message|nl2br }}
-                </li>
+                <tr>
+                    <td rowspan="2">{{ entry.created|date('H:i:s') }}</td>
+                    <td><b>{{ entry.title }}</b></td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ entry.message|nl2br }}
+                    </td>
+                </tr>
             {% else %}
-                <li>No Entry found</li>
+                <tr>
+                    <td>No Entry found</td>
+                </tr>
             {% endfor %}
-        </ul>
+        </table>
     </div>
 {% endblock %}
