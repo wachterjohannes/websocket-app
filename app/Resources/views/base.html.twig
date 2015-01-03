@@ -1,13 +1,54 @@
 <!DOCTYPE html>
 <html>
     <head>
+
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
+
+        <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
+        {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
     </head>
+
     <body>
-        {% block body %}{% endblock %}
+        <div class="container">
+            <div class="header">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation">
+                            <a href="/">Home</a>
+                        </li>
+                        <li role="presentation">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ path('event') }}">Events</a></li>
+                                <li><a href="{{ path('entry') }}">Entries</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <h3 class="text-muted">VlbgWebDev Live Ticker</h3>
+            </div>
+
+            {% block body %}{% endblock %}
+
+            <footer class="footer">
+                <p>&copy; VlbgWebDev 2014</p>
+            </footer>
+
+        </div> <!-- /container -->
+
+        <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+        <script src="{{ asset('js/jquery.js') }}"></script>
+        <!-- Include all JavaScripts, compiled by Assetic -->
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

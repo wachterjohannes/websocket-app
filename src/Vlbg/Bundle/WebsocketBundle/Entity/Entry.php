@@ -80,4 +80,60 @@ class Entry
     {
         return $this->creator;
     }
+    /**
+     * @var string
+     */
+    private $message;
+
+    /**
+     * @var \Vlbg\Bundle\WebsocketBundle\Entity\Event
+     */
+    private $event;
+
+
+    /**
+     * Set message
+     *
+     * @param string $message
+     * @return Entry
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return string 
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * Set event
+     *
+     * @param \Vlbg\Bundle\WebsocketBundle\Entity\Event $event
+     * @return Entry
+     */
+    public function setEvent(\Vlbg\Bundle\WebsocketBundle\Entity\Event $event = null)
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * Get event
+     *
+     * @return \Vlbg\Bundle\WebsocketBundle\Entity\Event 
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
 }

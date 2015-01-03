@@ -1,4 +1,4 @@
 vlbg_websocket:
-    resource: "@VlbgWebsocketBundle/Resources/config/routing.xml"
+    resource: "@VlbgWebsocketBundle/Resources/config/routing.yml"
     prefix:   /
 
