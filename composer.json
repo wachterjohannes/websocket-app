@@ -37,7 +37,9 @@
         "braincrafted/bootstrap-bundle": "~2.0",
         "twbs/bootstrap": "3.0.*",
         "jquery/jquery":  "1.11.*",
-        "leafo/lessphp": "*"
+        "leafo/lessphp": "*",
+
+        "cboden/ratchet": "0.3.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
