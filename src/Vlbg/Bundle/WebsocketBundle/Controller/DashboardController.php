@@ -3,6 +3,7 @@
 namespace Vlbg\Bundle\WebsocketBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends Controller
 {
@@ -17,17 +18,22 @@ class DashboardController extends Controller
         );
     }
 
-    public function tickerAction($id)
+    public function tickerAction($id, Request $request)
     {
-        $doctrine = $this->get('doctrine');
-        $eventRepository = $doctrine->getRepository('VlbgWebsocketBundle:Event');
-        $entryRepository = $doctrine->getRepository('VlbgWebsocketBundle:Entry');
+        $manager = $this->get('vlbg_websocket.ticker');
+
+        $since = $request->get('since');
+        if ($since !== null) {
+            $since = \DateTime::createFromFormat('Y-m-d H:i:s', $since);
+        }
+        $event = $manager->getEvent($id);
+        $entries = $manager->getEntries($id, $since);
 
         return $this->render(
             'VlbgWebsocketBundle:Dashboard:ticker.html.twig',
             array(
-                'event' => $eventRepository->find($id),
-                'entries' => $entryRepository->findBy(array('event' => $id), array('created' => 'DESC'))
+                'event' => $event,
+                'entries' => $entries
             )
         );
     }
