@@ -8,7 +8,8 @@
         <default key="_controller">VlbgWebsocketBundle:Dashboard:index</default>
     </route>
 
-    <route id="ticker" path="/event/{id}/ticker">
+    <route id="ticker" path="/event/{id}/ticker.{_format}">
         <default key="_controller">VlbgWebsocketBundle:Dashboard:ticker</default>
+        <default key="_format">html</default>
     </route>
 </routes>

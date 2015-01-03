@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Entry
  */
-class Entry
+class Entry implements \JsonSerializable
 {
     /**
      * @var integer
@@ -163,5 +163,18 @@ class Entry
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    function jsonSerialize()
+    {
+        return array(
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'created' => $this->getCreated(),
+            'message' => $this->getMessage(),
+        );
     }
 }

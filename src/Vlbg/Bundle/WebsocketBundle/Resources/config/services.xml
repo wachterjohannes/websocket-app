@@ -4,13 +4,20 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
     <services>
-        <service id="vlbg_websocket.example" class="Vlbg\Bundle\WebsocketBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="vlbg_websocket.ticker.event_repo" factory-service="doctrine" factory-method="getRepository"
+                class="Doctrine\ORM\EntityRepository">
+            <argument type="string">VlbgWebsocketBundle:Event</argument>
+        </service>
+
+        <service id="vlbg_websocket.ticker.entry_repo" factory-service="doctrine" factory-method="getRepository"
+                 class="Doctrine\ORM\EntityRepository">
+            <argument type="string">VlbgWebsocketBundle:Entry</argument>
+        </service>
+
+        <service id="vlbg_websocket.ticker" class="Vlbg\Bundle\WebsocketBundle\Ticker\TickerManager">
+            <argument type="service" id="vlbg_websocket.ticker.event_repo"/>
+            <argument type="service" id="vlbg_websocket.ticker.entry_repo"/>
         </service>
     </services>
-    -->
 </container>
