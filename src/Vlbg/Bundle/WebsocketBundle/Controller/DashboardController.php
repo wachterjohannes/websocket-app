@@ -29,12 +29,22 @@ class DashboardController extends Controller
         $event = $manager->getEvent($id);
         $entries = $manager->getEntries($id, $since);
 
-        return $this->render(
-            'VlbgWebsocketBundle:Dashboard:ticker.html.twig',
-            array(
-                'event' => $event,
-                'entries' => $entries
-            )
-        );
+        if ($request->getRequestFormat() === 'json') {
+            return $this->render(
+                'VlbgWebsocketBundle:Dashboard:ticker.json.twig',
+                array(
+                    'event' => $event,
+                    'entries' => iterator_to_array($entries)
+                )
+            );
+        } else {
+            return $this->render(
+                'VlbgWebsocketBundle:Dashboard:ticker.html.twig',
+                array(
+                    'event' => $event,
+                    'entries' => $entries
+                )
+            );
+        }
     }
 }
