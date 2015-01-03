@@ -174,7 +174,7 @@ class Entry implements \JsonSerializable
             'id' => $this->getId(),
             'title' => $this->getTitle(),
             'created' => $this->getCreated(),
-            'message' => $this->getMessage(),
+            'message' => nl2br($this->getMessage()),
         );
     }
 }

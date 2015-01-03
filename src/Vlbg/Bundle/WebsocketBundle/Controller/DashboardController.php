@@ -24,7 +24,9 @@ class DashboardController extends Controller
 
         $since = $request->get('since');
         if ($since !== null) {
-            $since = \DateTime::createFromFormat('Y-m-d H:i:s', $since);
+            $time = intval($since);
+            $since = new \DateTime();
+            $since->setTimestamp($time);
         }
         $event = $manager->getEvent($id);
         $entries = $manager->getEntries($id, $since);
