@@ -9,6 +9,7 @@
 
         <field name="creator" type="string" column="creator" length="255"/>
         <field name="created" type="datetime" column="created"/>
+        <field name="title" type="string" column="title" length="255" nullable="true"/>
         <field name="message" type="text" column="message"/>
 
         <many-to-one target-entity="Vlbg\Bundle\WebsocketBundle\Entity\Event" field="event"/>

@@ -1,8 +1,11 @@
 vlbg_websocket_entry:
     resource: "@VlbgWebsocketBundle/Resources/config/routing/entry.xml"
-    prefix:   /entry
+    prefix:   /admin/entry
 
 vlbg_websocket_event:
     resource: "@VlbgWebsocketBundle/Resources/config/routing/event.xml"
-    prefix:   /event
+    prefix:   /admin/event
 
+vlbg_websocket_dashboard:
+    resource: "@VlbgWebsocketBundle/Resources/config/routing/dashboard.xml"
+    prefix:   /

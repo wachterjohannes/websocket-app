@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>{{ event.name }}</h1>
+
+    <div class="row">
+        <ul>
+            {% for entry in entries %}
+                <li>
+                    <b>{{ entry.title }}</b> by {{ entry.creator }} ({{ entry.created|date('Y-m-d H:i:s') }})<br/>
+
+                    {{ entry.message|nl2br }}
+                </li>
+            {% else %}
+                <li>No Entry found</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
