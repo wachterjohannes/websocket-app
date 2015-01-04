@@ -24,6 +24,13 @@ class TickerMessageComponent implements MessageComponentInterface
         $this->manager = $manager;
     }
 
+    public function onEntryCreated($entry)
+    {
+        $entryData = json_decode($entry, true);
+
+        $this->sendMessage($entryData['event'], $entry);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -57,8 +64,13 @@ class TickerMessageComponent implements MessageComponentInterface
     {
         $ticker = $this->clients[$from]['id'];
 
+        $this->sendMessage($ticker, $msg);
+    }
+
+    protected function sendMessage($ticker, $msg)
+    {
         foreach ($this->clients as $client) {
-            if ($this->clients[$client]['id'] === $ticker) {
+            if ($this->clients[$client]['id'] == $ticker) {
                 $client->send($msg);
             }
         }
