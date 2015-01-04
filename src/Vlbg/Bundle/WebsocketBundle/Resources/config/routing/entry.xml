@@ -32,7 +32,7 @@
 
     <route id="entry_delete" path="/{id}/delete">
         <default key="_controller">VlbgWebsocketBundle:Entry:delete</default>
-        <requirement key="_method">post|delete</requirement>
+        <requirement key="_method">get|post|delete</requirement>
     </route>
 
 </routes>

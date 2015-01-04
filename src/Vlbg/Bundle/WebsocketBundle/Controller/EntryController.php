@@ -25,10 +25,14 @@ class EntryController extends Controller
 
         $entities = $em->getRepository('VlbgWebsocketBundle:Entry')->findAll();
 
-        return $this->render('VlbgWebsocketBundle:Entry:index.html.twig', array(
-            'entities' => $entities,
-        ));
+        return $this->render(
+            'VlbgWebsocketBundle:Entry:index.html.twig',
+            array(
+                'entities' => $entities,
+            )
+        );
     }
+
     /**
      * Creates a new Entry entity.
      *
@@ -47,10 +51,13 @@ class EntryController extends Controller
             return $this->redirect($this->generateUrl('entry_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('VlbgWebsocketBundle:Entry:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
+        return $this->render(
+            'VlbgWebsocketBundle:Entry:new.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -62,10 +69,14 @@ class EntryController extends Controller
      */
     private function createCreateForm(Entry $entity)
     {
-        $form = $this->createForm(new EntryType(), $entity, array(
-            'action' => $this->generateUrl('entry_create'),
-            'method' => 'POST',
-        ));
+        $form = $this->createForm(
+            new EntryType(),
+            $entity,
+            array(
+                'action' => $this->generateUrl('entry_create'),
+                'method' => 'POST',
+            )
+        );
 
         $form->add('submit', 'submit', array('label' => 'Create'));
 
@@ -79,12 +90,15 @@ class EntryController extends Controller
     public function newAction()
     {
         $entity = new Entry();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
-        return $this->render('VlbgWebsocketBundle:Entry:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
+        return $this->render(
+            'VlbgWebsocketBundle:Entry:new.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -103,10 +117,13 @@ class EntryController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('VlbgWebsocketBundle:Entry:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'VlbgWebsocketBundle:Entry:show.html.twig',
+            array(
+                'entity' => $entity,
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
     }
 
     /**
@@ -126,31 +143,39 @@ class EntryController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('VlbgWebsocketBundle:Entry:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'VlbgWebsocketBundle:Entry:edit.html.twig',
+            array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
     }
 
     /**
-    * Creates a form to edit a Entry entity.
-    *
-    * @param Entry $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Entry entity.
+     *
+     * @param Entry $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Entry $entity)
     {
-        $form = $this->createForm(new EntryType(), $entity, array(
-            'action' => $this->generateUrl('entry_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
+        $form = $this->createForm(
+            new EntryType(),
+            $entity,
+            array(
+                'action' => $this->generateUrl('entry_update', array('id' => $entity->getId())),
+                'method' => 'PUT',
+            )
+        );
 
         $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
+
     /**
      * Edits an existing Entry entity.
      *
@@ -175,32 +200,31 @@ class EntryController extends Controller
             return $this->redirect($this->generateUrl('entry_edit', array('id' => $id)));
         }
 
-        return $this->render('VlbgWebsocketBundle:Entry:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            'VlbgWebsocketBundle:Entry:edit.html.twig',
+            array(
+                'entity' => $entity,
+                'edit_form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
     }
+
     /**
      * Deletes a Entry entity.
      *
      */
     public function deleteAction(Request $request, $id)
     {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('VlbgWebsocketBundle:Entry')->find($id);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('VlbgWebsocketBundle:Entry')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Entry entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Entry entity.');
         }
+
+        $em->remove($entity);
+        $em->flush();
 
         return $this->redirect($this->generateUrl('entry'));
     }
@@ -218,7 +242,6 @@ class EntryController extends Controller
             ->setAction($this->generateUrl('entry_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+            ->getForm();
     }
 }
