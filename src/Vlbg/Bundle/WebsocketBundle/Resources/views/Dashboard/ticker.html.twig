@@ -5,7 +5,7 @@
     <a href="{{ path('ticker', {id: event.id}) }}">Reload</a>
 
     <div class="row">
-        <table class="table">
+        <table class="table" id="entries">
             {% for entry in entries %}
                 <tr>
                     <td rowspan="2">{{ entry.created|date('H:i:s') }}</td>
@@ -17,8 +17,8 @@
                     </td>
                 </tr>
             {% else %}
-                <tr>
-                    <td>No Entry found</td>
+                <tr id="empty">
+                    <td colspan="2">No Entry found</td>
                 </tr>
             {% endfor %}
         </table>
