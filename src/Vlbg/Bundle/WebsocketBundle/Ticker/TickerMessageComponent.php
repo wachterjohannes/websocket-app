@@ -12,8 +12,15 @@ class TickerMessageComponent implements MessageComponentInterface
      */
     private $manager;
 
+    /**
+     * @var \SplObjectStorage
+     */
+    private $clients;
+
     function __construct($manager)
     {
+        $this->clients = new \SplObjectStorage();
+
         $this->manager = $manager;
     }
 
@@ -22,6 +29,9 @@ class TickerMessageComponent implements MessageComponentInterface
      */
     function onOpen(ConnectionInterface $conn)
     {
+        $query = $conn->WebSocket->request->getUrl(true)->getQuery();
+
+        $this->clients->attach($conn, $query);
     }
 
     /**
@@ -29,6 +39,7 @@ class TickerMessageComponent implements MessageComponentInterface
      */
     function onClose(ConnectionInterface $conn)
     {
+        $this->clients->detach($conn);
     }
 
     /**
@@ -36,6 +47,7 @@ class TickerMessageComponent implements MessageComponentInterface
      */
     function onError(ConnectionInterface $conn, \Exception $e)
     {
+        $conn->close();
     }
 
     /**
@@ -43,5 +55,12 @@ class TickerMessageComponent implements MessageComponentInterface
      */
     function onMessage(ConnectionInterface $from, $msg)
     {
+        $ticker = $this->clients[$from]['id'];
+
+        foreach ($this->clients as $client) {
+            if ($this->clients[$client]['id'] === $ticker) {
+                $client->send($msg);
+            }
+        }
     }
 }

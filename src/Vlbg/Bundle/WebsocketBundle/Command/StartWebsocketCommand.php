@@ -2,11 +2,10 @@
 
 namespace Vlbg\Bundle\WebsocketBundle\Command;
 
-use Ratchet\Server\IoServer;
+use Ratchet;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vlbg\Bundle\WebsocketBundle\Entity\Entry;
 
 class StartWebsocketCommand extends ContainerAwareCommand
 {
@@ -18,11 +17,13 @@ class StartWebsocketCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $server = IoServer::factory(
-            $this->getContainer()->get('vlbg_websocket.websocket'),
-            $input->getArgument('port')
-        );
+        $port = $input->getArgument('port');
 
-        $server->run();
+        $output->writeln('Connect to ws://localhost:' . $port);
+
+        $app = new Ratchet\App('localhost', $port);
+        $app->route('/ticker/{id}', $this->getContainer()->get('vlbg_websocket.websocket'), array('*'));
+        $app->route('/echo', new Ratchet\Server\EchoServer, array('*'));
+        $app->run();
     }
 }
