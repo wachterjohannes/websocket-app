@@ -27,8 +27,11 @@ class TickerManager
      */
     private $entityManager;
 
-    function __construct(EntityManager $entityManager, EntityRepository $eventRepository, EntityRepository $entryRepository)
-    {
+    function __construct(
+        EntityManager $entityManager,
+        EntityRepository $eventRepository,
+        EntityRepository $entryRepository
+    ) {
         $this->eventRepository = $eventRepository;
         $this->entryRepository = $entryRepository;
         $this->entityManager = $entityManager;
