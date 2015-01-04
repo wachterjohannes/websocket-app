@@ -29,7 +29,7 @@ class EntryCreateCommand extends ContainerAwareCommand
         $entity->setCreator($input->getArgument('creator'));
         $entity->setCreated(new \DateTime());
         $entity->setEvent($em->getReference('VlbgWebsocketBundle:Event', $input->getArgument('event')));
-        $em->persist($entity);
-        $em->flush();
+
+        $this->getContainer()->get('vlbg_websocket.ticker')->createEntry($entity);
     }
 }

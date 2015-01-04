@@ -3,7 +3,10 @@
 namespace Vlbg\Bundle\WebsocketBundle\Ticker;
 
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Vlbg\Bundle\WebsocketBundle\Entity\Entry;
+use Vlbg\Bundle\WebsocketBundle\Entity\Event;
 
 class TickerManager
 {
@@ -17,10 +20,16 @@ class TickerManager
      */
     private $entryRepository;
 
-    function __construct(EntityRepository $eventRepository, EntityRepository $entryRepository)
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    function __construct(EntityManager $entityManager, EntityRepository $eventRepository, EntityRepository $entryRepository)
     {
         $this->eventRepository = $eventRepository;
         $this->entryRepository = $entryRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function getEvents()
@@ -46,5 +55,17 @@ class TickerManager
         }
 
         return $this->entryRepository->matching($criteria);
+    }
+
+    public function createEntry(Entry $entry)
+    {
+        $this->entityManager->persist($entry);
+        $this->entityManager->flush();
+    }
+
+    public function createEvent(Event $event)
+    {
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
     }
 }

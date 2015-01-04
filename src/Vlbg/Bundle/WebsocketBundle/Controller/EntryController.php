@@ -44,9 +44,7 @@ class EntryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+            $this->get('vlbg_websocket.ticker')->createEntry($entity);
 
             return $this->redirect($this->generateUrl('entry_show', array('id' => $entity->getId())));
         }

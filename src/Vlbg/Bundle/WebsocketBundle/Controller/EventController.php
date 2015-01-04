@@ -40,9 +40,7 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+            $this->get('vlbg_websocket.ticker')->createEvent($entity);
 
             return $this->redirect($this->generateUrl('event_show', array('id' => $entity->getId())));
         }
