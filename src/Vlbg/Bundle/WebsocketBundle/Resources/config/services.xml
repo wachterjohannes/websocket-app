@@ -16,6 +16,7 @@
         </service>
 
         <service id="vlbg_websocket.ticker" class="Vlbg\Bundle\WebsocketBundle\Ticker\TickerManager">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="vlbg_websocket.ticker.event_repo"/>
             <argument type="service" id="vlbg_websocket.ticker.entry_repo"/>
         </service>
