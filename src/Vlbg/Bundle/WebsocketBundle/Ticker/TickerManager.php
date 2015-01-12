@@ -7,6 +7,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Vlbg\Bundle\WebsocketBundle\Entity\Entry;
 use Vlbg\Bundle\WebsocketBundle\Entity\Event;
+use ZMQ;
+use ZMQContext;
 
 class TickerManager
 {
@@ -25,8 +27,11 @@ class TickerManager
      */
     private $entityManager;
 
-    function __construct(EntityManager $entityManager, EntityRepository $eventRepository, EntityRepository $entryRepository)
-    {
+    function __construct(
+        EntityManager $entityManager,
+        EntityRepository $eventRepository,
+        EntityRepository $entryRepository
+    ) {
         $this->eventRepository = $eventRepository;
         $this->entryRepository = $entryRepository;
         $this->entityManager = $entityManager;
@@ -61,6 +66,16 @@ class TickerManager
     {
         $this->entityManager->persist($entry);
         $this->entityManager->flush();
+
+        try {
+            // This is our new stuff
+            $context = new ZMQContext();
+            $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+            $socket->connect("tcp://localhost:5555");
+
+            $socket->send(json_encode($entry));
+        } catch (\ZMQSocketException $ex) {
+        }
     }
 
     public function createEvent(Event $event)

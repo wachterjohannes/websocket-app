@@ -20,5 +20,9 @@
             <argument type="service" id="vlbg_websocket.ticker.event_repo"/>
             <argument type="service" id="vlbg_websocket.ticker.entry_repo"/>
         </service>
+
+        <service id="vlbg_websocket.websocket" class="Vlbg\Bundle\WebsocketBundle\Ticker\TickerMessageComponent">
+            <argument type="service" id="vlbg_websocket.ticker"/>
+        </service>
     </services>
 </container>
