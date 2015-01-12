@@ -32,7 +32,7 @@ class StartWebsocketCommand extends ContainerAwareCommand
 
         $app = new \Ratchet\App('localhost', $port);
         $app->route('/echo', new \Ratchet\Server\EchoServer());
-        $app->route('/ticker/{id}', $messageComponent);
+        $app->route('/ticker', $messageComponent);
         $app->run();
     }
 }
