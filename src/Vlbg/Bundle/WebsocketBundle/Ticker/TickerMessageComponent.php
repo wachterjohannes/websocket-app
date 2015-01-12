@@ -35,7 +35,9 @@ class TickerMessageComponent implements MessageComponentInterface
      */
     function onOpen(ConnectionInterface $conn)
     {
-        $this->clients->attach($conn);
+        $query = $conn->WebSocket->request->getUrl(true)->getQuery();
+
+        $this->clients->attach($conn, $query);
     }
 
     /**
@@ -68,13 +70,17 @@ class TickerMessageComponent implements MessageComponentInterface
      */
     function onMessage(ConnectionInterface $from, $msg)
     {
-        $this->sendMessage($msg);
+        $ticker = $this->clients[$from]['id'];
+
+        $this->sendMessage($msg, $ticker);
     }
 
-    protected function sendMessage($msg)
+    protected function sendMessage($msg, $ticker)
     {
         foreach($this->clients as $client){
-            $client->send($msg);
+            if($this->clients[$client]['id'] == $ticker) {
+                $client->send($msg);
+            }
         }
     }
 }
