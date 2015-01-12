@@ -37,8 +37,8 @@ class StartWebsocketCommand extends ContainerAwareCommand
         $pull->on('message', array($messageComponent, 'onEntryCreated'));
 
         $app = new \Ratchet\App('localhost', $port, '127.0.0.1', $loop);
-        $app->route('/echo', new \Ratchet\Server\EchoServer());
-        $app->route('/ticker/{id}', $messageComponent);
+        $app->route('/echo', new \Ratchet\Server\EchoServer(), array('*'));
+        $app->route('/ticker/{id}', $messageComponent, array('*'));
         $app->run();
     }
 }

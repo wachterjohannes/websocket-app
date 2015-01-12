@@ -24,3 +24,31 @@
         </table>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function() {
+            var conn = new WebSocket('ws://localhost:9876/ticker/{{ event.id }}');
+            conn.onopen = function(e) {
+                console.log("Connection established!");
+            };
+
+            conn.onmessage = function(e) {
+                var entry = JSON.parse(e.data);
+
+                $('#empty').remove();
+                $('#entries').prepend([
+                    '<tr>',
+                    '<td rowspan="2">NEW</td>',
+                    '<td><b>', entry.title, '</b></td>',
+                    '</tr>',
+                    '<tr>',
+                    '<td>',
+                    entry.message,
+                    '</td>',
+                    '</tr>'
+                ].join(''));
+            };
+        });
+    </script>
+{% endblock %}
