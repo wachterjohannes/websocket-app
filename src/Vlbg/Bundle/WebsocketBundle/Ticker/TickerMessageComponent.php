@@ -28,6 +28,13 @@ class TickerMessageComponent implements MessageComponentInterface
         $this->clients = new \SplObjectStorage();
     }
 
+    public function onEntryCreated($entry)
+    {
+        $entryData = json_decode($entry, true);
+
+        $this->sendMessage($entry, $entryData['event']);
+    }
+
     /**
      * When a new connection is opened it will be passed to this method
      * @param  ConnectionInterface $conn The socket/connection that just connected to your application

@@ -28,9 +28,15 @@ class StartWebsocketCommand extends ContainerAwareCommand
         $port = 9876;
         $output->writeln('Connect to ws://localhost:' . $port);
 
+        $loop = \React\EventLoop\Factory::create();
         $messageComponent = $this->getContainer()->get('vlbg_websocket.component');
 
-        $app = new \Ratchet\App('localhost', $port);
+        $context = new \React\ZMQ\Context($loop);
+        $pull = $context->getSocket(\ZMQ::SOCKET_PULL);
+        $pull->bind('tcp://127.0.0.1:5555');
+        $pull->on('message', array($messageComponent, 'onEntryCreated'));
+
+        $app = new \Ratchet\App('localhost', $port, '127.0.0.1', $loop);
         $app->route('/echo', new \Ratchet\Server\EchoServer());
         $app->route('/ticker/{id}', $messageComponent);
         $app->run();
