@@ -28,8 +28,11 @@ class StartWebsocketCommand extends ContainerAwareCommand
         $port = 9876;
         $output->writeln('Connect to ws://localhost:' . $port);
 
+        $messageComponent = $this->getContainer()->get('vlbg_websocket.component');
+
         $app = new \Ratchet\App('localhost', $port);
         $app->route('/echo', new \Ratchet\Server\EchoServer());
+        $app->route('/ticker/{id}', $messageComponent);
         $app->run();
     }
 }
