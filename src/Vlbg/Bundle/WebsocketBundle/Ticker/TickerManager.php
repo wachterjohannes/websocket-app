@@ -61,6 +61,14 @@ class TickerManager
     {
         $this->entityManager->persist($entry);
         $this->entityManager->flush();
+
+        try{
+            $context = new \ZMQContext();
+            $socket = $context->getSocket(\ZMQ::SOCKET_PUSH);
+            $socket->connect('tcp://localhost:5555');
+
+            $socket->send(json_encode($entry));
+        }catch(\ZMQSocketException $e){}
     }
 
     public function createEvent(Event $event)
