@@ -32,11 +32,19 @@ class DashboardController extends Controller
         $entries = $manager->getEntries($id, $since);
 
         if ($request->getRequestFormat() === 'json') {
+            $i = 0;
+            $entries = iterator_to_array($entries);
+            while (count($entries) === 0 && $i < 15) {
+                usleep(1000000);
+                $entries = $manager->getEntries($id, $since);
+                $i++;
+            }
+
             return $this->render(
                 'VlbgWebsocketBundle:Dashboard:ticker.json.twig',
                 array(
                     'event' => $event,
-                    'entries' => iterator_to_array($entries)
+                    'entries' => $entries
                 )
             );
         } else {
