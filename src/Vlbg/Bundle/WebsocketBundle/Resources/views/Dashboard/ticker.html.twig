@@ -24,3 +24,41 @@
         </table>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        var date = new Date(),
+                url = '{{ path('ticker', {id: event.id, _format: 'json', since: '{date}'}) }}';
+
+        (function poll() {
+            setTimeout(function() {
+                $.ajax({
+                    url: url.replace('%7Bdate%7D', date.getTime() / 1000),
+                    type: 'GET',
+                    success: function(entries) {
+                        if (entries.length > 0) {
+                            date = new Date();
+
+                            entries.forEach(function(entry) {
+                                $('#entries').prepend([
+                                    '<tr>',
+                                    '<td rowspan="2">', entry.date, '</td>',
+                                    '<td><b>', entry.title, '</b></td>',
+                                    '</tr>',
+                                    '<tr>',
+                                    '<td>',
+                                    entry.message,
+                                    '</td>',
+                                    '</tr>'
+                                ].join(''));
+                            });
+                        }
+                    },
+                    dataType: 'json',
+                    complete: poll,
+                    timeout: 2000
+                })
+            }, 5000);
+        })();
+    </script>
+{% endblock %}
